@@ -1,2 +1,2 @@
-include ':app', ':features:search', ':repository', ':data', ':model'
+include ':app', ':features:search', ':repository', ':data', ':model', ':commom:uicomponents', ':common:uicomponents'
 rootProject.name='frame'

@@ -1,1 +1,1 @@
-C:\Users\jhoml\Documents\Projekty\logstf_git\frame\buildSrc\build\classes\kotlin\main\Config.class;C:\Users\jhoml\Documents\Projekty\logstf_git\frame\buildSrc\build\classes\kotlin\main\Deps.class;C:\Users\jhoml\Documents\Projekty\logstf_git\frame\buildSrc\build\classes\kotlin\main\Versions.class
+C:\Users\jhoml\Documents\Projekty\framegit\buildSrc\build\classes\kotlin\main\Config.class;C:\Users\jhoml\Documents\Projekty\framegit\buildSrc\build\classes\kotlin\main\Deps.class;C:\Users\jhoml\Documents\Projekty\framegit\buildSrc\build\classes\kotlin\main\Versions.class

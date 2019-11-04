@@ -15,7 +15,7 @@ object Versions {
     val androidx_navigation = "2.0.0"
     val androidx_constraintLayout = "1.1.3"
     val material = "1.1.0-alpha04"
-    val lifecycle = "2.2.0-rc01"
+    val lifecycle = "2.1.0"
     // </editor-fold>
 
     // <editor-fold desc="testing">
@@ -39,29 +39,39 @@ object Versions {
 
 object Deps {
     val androidx_core = "androidx.core:core-ktx:${Versions.androidx_core}"
-    val androidx_constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.androidx_constraintLayout}"
+    val androidx_constraintlayout =
+        "androidx.constraintlayout:constraintlayout:${Versions.androidx_constraintLayout}"
     val androidx_material = "com.google.android.material:material:${Versions.material}"
-    val androidx_navigation_fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.androidx_navigation}"
-    val androidx_navigation_ui = "androidx.navigation:navigation-ui-ktx:${Versions.androidx_navigation}"
-    val androidx_recyclerview = "androidx.recyclerview:recyclerview:${Versions.androidx_recyclerview}"
+    val androidx_navigation_fragment =
+        "androidx.navigation:navigation-fragment-ktx:${Versions.androidx_navigation}"
+    val androidx_navigation_ui =
+        "androidx.navigation:navigation-ui-ktx:${Versions.androidx_navigation}"
+    val androidx_recyclerview =
+        "androidx.recyclerview:recyclerview:${Versions.androidx_recyclerview}"
 
     val testlib_junit = "junit:junit:${Versions.junit}"
 
     val testandroidx_rules = "androidx.test:rules:${Versions.androidx_testing}"
     val testandroidx_runner = "androidx.test:runner:${Versions.androidx_testing}"
-    val testandroidx_espressocore = "androidx.test.espresso:espresso-core:${Versions.androidx_espresso}"
+    val testandroidx_espressocore =
+        "androidx.test.espresso:espresso-core:${Versions.androidx_espresso}"
 
     val tools_gradleandroid = "com.android.tools.build:gradle:${Versions.gradleandroid}"
     val tools_kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-    val tools_gradleversions = "com.github.ben-manes:gradle-versions-plugin:${Versions.gradleversions}"
+    val tools_gradleversions =
+        "com.github.ben-manes:gradle-versions-plugin:${Versions.gradleversions}"
 
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val retrofit_gson_converter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
     val coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-    val coroutines_android  = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    val coroutines_android =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 
     val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
     val okhttp_interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
     val lifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
 
+    val koin_android = "org.koin:koin-android:${Versions.koin}"
+    val koin_android_scope = "org.koin:koin-androidx-scope:${Versions.koin}"
+    val koin_android_viewmodel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
 }

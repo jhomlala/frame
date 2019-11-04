@@ -3,8 +3,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 dependencies {
-    implementation project(':model')
-    implementation project(':repository')
+    implementation project(':common:uicomponents')
     implementation Deps.coroutines_core
     implementation Deps.coroutines_android
     implementation Deps.androidx_material
@@ -12,6 +11,16 @@ dependencies {
     implementation Deps.androidx_navigation_fragment
     implementation Deps.androidx_navigation_ui
     implementation Deps.lifecycle
+    implementation Deps.koin_android
+    implementation Deps.koin_android_scope
+    implementation Deps.koin_android_viewmodel
+    implementation project(":repository")
+    implementation project(":model")
+
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     testImplementation Deps.testlib_junit
 
     androidTestImplementation Deps.testandroidx_runner

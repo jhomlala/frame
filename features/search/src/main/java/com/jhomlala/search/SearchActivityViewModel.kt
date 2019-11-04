@@ -1,12 +1,14 @@
 package com.jhomlala.search
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import com.jhomlala.commonuicomponents.BaseActivityViewModel
 import com.jhomlala.repository.service.OmdbService
 import kotlinx.coroutines.*
+import org.koin.core.inject
 
-class SearchActivityViewModel: ViewModel() {
-    val omdbService = OmdbService.create()
+class SearchActivityViewModel: BaseActivityViewModel() {
+
+    private val omdbService: OmdbService by inject()
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
