@@ -1,3 +1,7 @@
 package com.jhomlala.model
 
-data class Movie(val title: String, val year: String)
+import com.google.gson.annotations.SerializedName
+
+data class Movie(
+    @SerializedName("Title") val title: String, val year: String
+)

@@ -34,6 +34,7 @@ object Versions {
     val coroutines = "1.3.2"
     val okhttp = "4.2.1"
     val koin = "2.0.1"
+    val gson = "2.8.6"
 
 }
 
@@ -74,4 +75,5 @@ object Deps {
     val koin_android = "org.koin:koin-android:${Versions.koin}"
     val koin_android_scope = "org.koin:koin-androidx-scope:${Versions.koin}"
     val koin_android_viewmodel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
+    val gson = "com.google.code.gson:gson:${Versions.gson}"
 }

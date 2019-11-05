@@ -8,7 +8,7 @@ dependencies {
     implementation Deps.androidx_constraintlayout
     implementation Deps.androidx_navigation_fragment
     implementation Deps.androidx_navigation_ui
-
+    implementation Deps.gson
     testImplementation Deps.testlib_junit
 
     androidTestImplementation Deps.testandroidx_runner
