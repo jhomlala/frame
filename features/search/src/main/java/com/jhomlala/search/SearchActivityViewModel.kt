@@ -4,13 +4,15 @@ import SingleLiveEvent
 import android.util.Log
 import androidx.databinding.adapters.SearchViewBindingAdapter
 import androidx.lifecycle.MutableLiveData
-import com.jhomlala.commonuicomponents.BaseActivityViewModel
+import com.jhomlala.common.repository.OmdbService
+import com.jhomlala.common.ui.BaseViewModel
+
 import com.jhomlala.model.Movie
-import com.jhomlala.repository.service.OmdbService
+
 import kotlinx.coroutines.*
 import org.koin.core.inject
 
-class SearchActivityViewModel : BaseActivityViewModel() {
+class SearchActivityViewModel : BaseViewModel() {
 
     private val omdbService: OmdbService by inject()
     private val viewModelJob = SupervisorJob()

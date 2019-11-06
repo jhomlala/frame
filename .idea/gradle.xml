@@ -10,15 +10,10 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/commom" />
-            <option value="$PROJECT_DIR$/commom/uicomponents" />
             <option value="$PROJECT_DIR$/common" />
-            <option value="$PROJECT_DIR$/common/uicomponents" />
-            <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/search" />
-            <option value="$PROJECT_DIR$/model" />
-            <option value="$PROJECT_DIR$/repository" />
+            <option value="$PROJECT_DIR$/frame" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

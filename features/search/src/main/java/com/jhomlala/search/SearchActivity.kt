@@ -6,15 +6,10 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jhomlala.repository.service.OmdbService
+
 import com.jhomlala.search.databinding.ActivitySearchBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
@@ -56,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
         binding.activitySearchRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun subscribeToViewModel(){
+    private fun subscribeToViewModel() {
         viewModel.moviesRecyclerAdapterUpdateEvent.observe(this, Observer {
             moviesAdapter.notifyDataSetChanged()
         })

@@ -1,11 +1,11 @@
 package com.jhomlala.frame
 
 import android.app.Application
-import com.jhomlala.repository.service.OmdbService
+import com.jhomlala.common.repository.OmdbService
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
-class MainApplication : Application(){
+class MainApplication : Application() {
 
     val baseNetworkKoinModule =
         module {
