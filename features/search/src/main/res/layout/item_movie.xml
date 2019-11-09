@@ -60,7 +60,7 @@
             android:id="@+id/item_movie_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/malachite"
+            android:background="@color/apple"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

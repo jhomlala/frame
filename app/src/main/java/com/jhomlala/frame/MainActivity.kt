@@ -10,6 +10,7 @@ import com.jhomlala.featuresdetails.DetailsActivity
 import com.jhomlala.model.Movie
 import com.jhomlala.search.ui.SearchActivity
 import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
             if (navigationEvent.type == NavigationEventType.DETAILS){
                 val bundle = Bundle()
                 bundle.putParcelable(BundleConst.MOVIE,navigationEvent.data as Movie)
-                launchActivity<DetailsActivity>()
+                Timber.d("Bundle: " + bundle)
+                launchActivity<DetailsActivity>(bundle)
             }
         }
     }

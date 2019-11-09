@@ -31,6 +31,8 @@ object Version {
     val koin = "2.0.1"
     val gson = "2.8.6"
     val timber = "4.7.1"
+    val glide = "4.10.0"
+    val glide_transformations = "4.1.0"
 
 }
 
@@ -74,4 +76,7 @@ object Deps {
     val koin_android_viewmodel = "org.koin:koin-androidx-viewmodel:${Version.koin}"
     val gson = "com.google.code.gson:gson:${Version.gson}"
     val timber = "com.jakewharton.timber:timber:${Version.timber}"
+    val glide = "com.github.bumptech.glide:glide:${Version.glide}"
+    val glide_compiler = "com.github.bumptech.glide:compiler:${Version.glide}"
+    val glide_transformations = "jp.wasabeef:glide-transformations:${Version.glide_transformations}"
 }

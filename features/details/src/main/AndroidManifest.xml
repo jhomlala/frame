@@ -4,8 +4,7 @@
 
     <application>
         <activity
-            android:name=".DetailsActivity"
-            android:label="@string/title_activity_details"></activity>
+            android:name=".DetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -27,14 +27,17 @@ inline fun <reified T : Any> Activity.launchActivity (
 }
 
 inline fun <reified T : Any> Context.launchActivity (
-    options: Bundle? = null,
+    extras: Bundle? = null,
     noinline init: Intent.() -> Unit = {})
 {
     val intent = newIntent<T>(this)
+    if (extras != null) {
+        intent.putExtras(extras)
+    }
     intent.init()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
     {
-        startActivity(intent, options)
+        startActivity(intent)
     } else {
         startActivity(intent)
     }
