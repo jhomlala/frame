@@ -1,5 +1,6 @@
-package com.jhomlala.search
+package com.jhomlala.search.ui
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
@@ -8,8 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jhomlala.common.model.NavigationEvent
+import com.jhomlala.common.model.NavigationEventType
+import com.jhomlala.common.utils.launchActivity
+import com.jhomlala.search.R
 
 import com.jhomlala.search.databinding.ActivitySearchBinding
+import timber.log.Timber
 
 class SearchActivity : AppCompatActivity() {
 
@@ -27,10 +33,11 @@ class SearchActivity : AppCompatActivity() {
         binding.executePendingBindings()
         setupUI()
         subscribeToViewModel()
+        Timber.d("Created search activity")
     }
 
     private fun setupUI() {
-        binding.activitySearchSearchView.setOnQueryTextListener(object :
+        binding.search.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d("Test", "Query text submit: " + query)
@@ -45,6 +52,8 @@ class SearchActivity : AppCompatActivity() {
                 return true
             }
         })
+        setSupportActionBar(binding.toolbar)
+        binding.search.requestFocus()
 
         moviesAdapter = MovieAdapter(viewModel.items)
         binding.activitySearchRecyclerView.adapter = moviesAdapter
@@ -54,6 +63,10 @@ class SearchActivity : AppCompatActivity() {
     private fun subscribeToViewModel() {
         viewModel.moviesRecyclerAdapterUpdateEvent.observe(this, Observer {
             moviesAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.movieClickEvent.observe(this, Observer { event ->
+            EventBus.post(NavigationEvent(NavigationEventType.DETAILS, event.movie))
         })
     }
 

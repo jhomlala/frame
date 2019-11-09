@@ -3,17 +3,18 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 dependencies {
+    implementation Deps.androidx_core
     implementation Deps.coroutines_core
     implementation Deps.coroutines_android
     implementation Deps.androidx_material
     implementation Deps.androidx_constraintlayout
     implementation Deps.androidx_navigation_fragment
     implementation Deps.androidx_navigation_ui
+    implementation Deps.androidx_appcompat
     implementation Deps.lifecycle
     implementation Deps.koin_android
     implementation Deps.koin_android_scope
     implementation Deps.koin_android_viewmodel
-
     implementation project(":common")
 
 
@@ -25,4 +26,7 @@ dependencies {
     androidTestImplementation Deps.testandroidx_runner
     androidTestImplementation Deps.testandroidx_rules
     androidTestImplementation Deps.testandroidx_espressocore
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation Deps.timber
 }

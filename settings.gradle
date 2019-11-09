@@ -1,2 +1,2 @@
-include ':app', ':features:search', ':common',
+include ':app', ':features:search', ':common', ':features:details',
 rootProject.name='frame'

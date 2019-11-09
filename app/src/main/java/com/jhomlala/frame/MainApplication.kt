@@ -4,6 +4,7 @@ import android.app.Application
 import com.jhomlala.common.repository.OmdbService
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import timber.log.Timber
 
 class MainApplication : Application() {
 
@@ -17,5 +18,6 @@ class MainApplication : Application() {
         startKoin {
             modules(listOf(baseNetworkKoinModule))
         }
+        Timber.plant(Timber.DebugTree())
     }
 }
