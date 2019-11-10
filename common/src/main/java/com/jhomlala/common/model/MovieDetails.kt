@@ -1,7 +1,10 @@
 package com.jhomlala.common.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class MovieDetails(
     @SerializedName("Title") val title: String,
     @SerializedName("Year") val year: Int,
@@ -28,4 +31,4 @@ data class MovieDetails(
     @SerializedName("Production") val production: String,
     @SerializedName("Website") val webiste: String,
     @SerializedName("Response") val response: Boolean
-)
+): Parcelable

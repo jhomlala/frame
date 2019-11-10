@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/movie_details_navigation"
+    app:startDestination="@id/generalInformationFragment">
+    <fragment
+        android:id="@+id/generalInformationFragment"
+        android:name="com.jhomlala.featuresdetails.MovieGeneralInformationFragment"
+        android:label="GeneralInformationFragment" >
+
+        <action
+            android:id="@+id/action_generalInformationFragment_to_movieExtraInformationFragment"
+            app:destination="@id/movieExtraInformationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieExtraInformationFragment"
+        android:name="com.jhomlala.featuresdetails.MovieExtraInformationFragment"
+        android:label="MovieExtraInformationFragment" />
+</navigation>

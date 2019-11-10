@@ -7,6 +7,7 @@ import com.jhomlala.common.model.NavigationEventType
 import com.jhomlala.common.utils.BundleConst
 import com.jhomlala.common.utils.launchActivity
 import com.jhomlala.featuresdetails.DetailsActivity
+import com.jhomlala.featuresdetails.MovieDetailsActivity
 import com.jhomlala.model.Movie
 import com.jhomlala.search.ui.SearchActivity
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 val bundle = Bundle()
                 bundle.putParcelable(BundleConst.MOVIE,navigationEvent.data as Movie)
                 Timber.d("Bundle: " + bundle)
-                launchActivity<DetailsActivity>(bundle)
+                launchActivity<MovieDetailsActivity>(bundle)
             }
         }
     }

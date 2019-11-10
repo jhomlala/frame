@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jhomlala.featuresdetails.MovieGeneralInformationFragmentViewModel" />
+        <variable
+            name="firstRatingViewModel"
+            type="com.jhomlala.featuresdetails.RatingViewModel" />
+        <variable
+            name="secondRatingViewModel"
+            type="com.jhomlala.featuresdetails.RatingViewModel" />
+        <variable
+            name="thirdRatingViewModel"
+            type="com.jhomlala.featuresdetails.RatingViewModel" />
+
+    </data>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/fragment_movie_general_information_background_image_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="150dp"
+                android:background="#DDFFFFFF" >
+
+                <TextView
+                    android:id="@+id/activity_details_title_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="170dp"
+                    android:ellipsize="end"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Test test" />
+
+                <TextView
+                    android:id="@+id/activity_details_year_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/activity_details_title_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_title_text_view"
+                    tools:text="2017" />
+
+                <TextView
+                    android:id="@+id/activity_details_genre_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="110dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="@{viewModel.genre}"
+                    tools:text="Adventure"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/activity_details_title_text_view" />
+
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/layout_rating"
+                    android:layout_width="100dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/include2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_plot_text_view"
+                    app:viewModel="@{firstRatingViewModel}" />
+
+                <include
+                    android:id="@+id/include2"
+                    layout="@layout/layout_rating"
+                    android:layout_width="100dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/include3"
+                    app:layout_constraintStart_toEndOf="@+id/include"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_plot_text_view"
+                    app:viewModel="@{secondRatingViewModel}" />
+
+                <include
+                    android:id="@+id/include3"
+                    layout="@layout/layout_rating"
+                    android:layout_width="100dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/include2"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_plot_text_view"
+                    app:viewModel="@{thirdRatingViewModel}" />
+
+                <TextView
+                    android:id="@+id/activity_details_plot_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.plot}"
+                    tools:text="Some plot some plot..."
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_genre_text_view" />
+
+                <Button
+                    android:id="@+id/fragment_movie_general_information_show_more_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/white"
+                    android:background="@color/orange"
+                    android:onClick="@{viewModel::onShowExtrasClicked}"
+                    android:text="@string/fragment_movie_general_information_show_extras"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/include3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/activity_details_poster_image_view"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
