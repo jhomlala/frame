@@ -2,6 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jhomlala.featuresdetails.DetailsActivityViewModel" />
+        <variable
+            name="firstRatingViewModel"
+            type="com.jhomlala.featuresdetails.RatingViewModel" />
+        <variable
+            name="secondRatingViewModel"
+            type="com.jhomlala.featuresdetails.RatingViewModel" />
+        <variable
+            name="thirdRatingViewModel"
+            type="com.jhomlala.featuresdetails.RatingViewModel" />
+
+    </data>
 
     <LinearLayout
         android:id="@+id/activity_details_root_constraint_layout"
@@ -50,21 +65,92 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="170dp"
                     android:ellipsize="end"
-                    android:lines="2"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Test test" />
 
                 <TextView
                     android:id="@+id/activity_details_year_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/activity_details_title_text_view"
                     app:layout_constraintTop_toBottomOf="@+id/activity_details_title_text_view"
                     tools:text="2017" />
+
+                <TextView
+                    android:id="@+id/activity_details_genre_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="110dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="@{viewModel.genre}"
+                    tools:text="Adventure"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/activity_details_title_text_view" />
+
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/layout_rating"
+                    android:layout_width="100dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/include2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_plot_text_view"
+                    app:viewModel="@{firstRatingViewModel}" />
+
+                <include
+                    android:id="@+id/include2"
+                    layout="@layout/layout_rating"
+                    android:layout_width="100dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/include3"
+                    app:layout_constraintStart_toEndOf="@+id/include"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_plot_text_view"
+                    app:viewModel="@{secondRatingViewModel}" />
+
+                <include
+                    android:id="@+id/include3"
+                    layout="@layout/layout_rating"
+                    android:layout_width="100dp"
+
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/include2"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_plot_text_view"
+                    app:viewModel="@{thirdRatingViewModel}" />
+
+                <TextView
+                    android:id="@+id/activity_details_plot_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.plot}"
+                    tools:text="Some plot some plot..."
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_details_genre_text_view" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView

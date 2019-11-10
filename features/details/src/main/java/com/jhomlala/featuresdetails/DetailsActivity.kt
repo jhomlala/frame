@@ -1,30 +1,32 @@
 package com.jhomlala.featuresdetails
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
-import com.bumptech.glide.request.target.CustomTarget
 
-import com.bumptech.glide.request.transition.Transition
 import com.jhomlala.common.utils.BundleConst
 import com.jhomlala.featuresdetails.databinding.ActivityDetailsBinding
 import com.jhomlala.model.Movie
 import jp.wasabeef.glide.transformations.BlurTransformation
 
-import kotlinx.android.synthetic.main.activity_details.*
 import timber.log.Timber
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsBinding
+    private lateinit var viewModel: DetailsActivityViewModel
+    private lateinit var firstRatingViewModel: RatingViewModel
+    private lateinit var secondRatingViewModel: RatingViewModel
+    private lateinit var thirdRatingViewModel: RatingViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
+        viewModel = ViewModelProviders.of(this).get(DetailsActivityViewModel::class.java)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.executePendingBindings()
 
@@ -33,8 +35,9 @@ class DetailsActivity : AppCompatActivity() {
         if (extras != null && extras.containsKey(BundleConst.MOVIE)) {
             val movie = extras.getParcelable<Movie>(BundleConst.MOVIE)
             if (movie != null) {
-                setupToolbar(movie)
-                setupBackground(movie)
+                viewModel.setup(movie)
+                setupUi()
+                subscribeToViewModel()
             } else {
                 Timber.e("Movie is null")
                 return
@@ -46,12 +49,18 @@ class DetailsActivity : AppCompatActivity() {
 
     }
 
-    private fun setupToolbar(movie: Movie) {
-        setSupportActionBar(binding.activityDetailsToolbar)
-        title = movie.title
+    private fun setupUi() {
+        setupToolbar()
+        setupBackground()
     }
 
-    private fun setupBackground(movie: Movie) {
+    private fun setupToolbar() {
+        setSupportActionBar(binding.activityDetailsToolbar)
+        title = viewModel.movie.title
+    }
+
+    private fun setupBackground() {
+        val movie = viewModel.movie
         val url = movie.poster.replace("SX300", "SX900")
         Glide.with(this).load(url).apply(bitmapTransform(BlurTransformation(10, 2)))
             .into(binding.activityDetailsBackgroundImageView)
@@ -59,6 +68,31 @@ class DetailsActivity : AppCompatActivity() {
         Glide.with(this).load(url).into(binding.activityDetailsPosterImageView)
         binding.activityDetailsTitleTextView.text = movie.title
         binding.activityDetailsYearTextView.text = movie.year
+    }
+
+    private fun subscribeToViewModel(){
+        viewModel.onMovieDetailsSelected.observe(this, Observer {
+            movieDetails ->
+            movieDetails.ratings.forEachIndexed { index, rating ->
+                if (index == 0){
+                    firstRatingViewModel = ViewModelProviders.of(this).get("firstRatingModel",RatingViewModel::class.java)
+                    firstRatingViewModel.setup(movieDetails.ratings[index])
+                    binding.firstRatingViewModel = firstRatingViewModel
+                }
+                if (index == 1){
+                    secondRatingViewModel = ViewModelProviders.of(this).get("secondRatingModel",RatingViewModel::class.java)
+                    secondRatingViewModel.setup(movieDetails.ratings[index])
+                    binding.secondRatingViewModel = secondRatingViewModel
+                }
+                if (index == 2){
+                    thirdRatingViewModel = ViewModelProviders.of(this).get("thirdRatingModel",RatingViewModel::class.java)
+                    thirdRatingViewModel.setup(movieDetails.ratings[index])
+                    binding.thirdRatingViewModel = thirdRatingViewModel
+                }
+            }
+            binding.executePendingBindings()
+
+        })
     }
 
 }

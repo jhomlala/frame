@@ -39,4 +39,10 @@ dependencies {
     implementation Deps.glide
     annotationProcessor Deps.glide_compiler
     implementation Deps.glide_transformations
+    implementation Deps.koin_android
+    implementation Deps.koin_android_scope
+    implementation Deps.koin_android_viewmodel
+    implementation Deps.coroutines_core
+    implementation Deps.coroutines_android
+    implementation Deps.lifecycle
 }

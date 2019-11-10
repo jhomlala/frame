@@ -1,5 +1,6 @@
 package com.jhomlala.common.repository
 
+import com.jhomlala.common.model.MovieDetails
 import com.jhomlala.common.model.SearchResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,6 +13,10 @@ import retrofit2.http.Query
 interface OmdbService {
     @GET("/")
     suspend fun searchMovie(@Query("apikey") apiKey: String, @Query("s") title: String): SearchResponse
+
+    @GET("/")
+    suspend fun getMovie(@Query("apikey") apiKey: String, @Query("i") id: String): MovieDetails
+
 
     companion object {
         fun create(): OmdbService {

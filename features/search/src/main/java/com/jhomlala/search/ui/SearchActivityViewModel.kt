@@ -17,8 +17,6 @@ import timber.log.Timber
 class SearchActivityViewModel : BaseViewModel() {
 
     private val omdbService: OmdbService by inject()
-    private val viewModelJob = SupervisorJob()
-    private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     val items: ArrayList<Movie> = ArrayList()
     val moviesRecyclerAdapterUpdateEvent = SingleLiveEvent<RecyclerAdapterUpdateEvent>()
     val progressState = MutableLiveData<Boolean>()
@@ -35,12 +33,6 @@ class SearchActivityViewModel : BaseViewModel() {
         ) {
             movieClickEvent.value = it
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.coroutineContext.cancelChildren()
-        EventBus.unregister(this.javaClass.simpleName)
     }
 
     fun searchMovies(movieTitle: String) {
