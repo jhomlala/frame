@@ -49,7 +49,13 @@ class SearchActivityViewModel : BaseViewModel() {
                     return@launch
                 }
 
-                items.addAll(searchResult.search)
+                val results = searchResult.search
+                results.forEach { movie ->
+                    if (movie.poster == "N/A") {
+                        movie.poster = "https://i.imgur.com/59Uc49b.png"
+                    }
+                }
+                items.addAll(results)
                 withContext(Dispatchers.Main) {
                     progressState.value = false
                     refreshAllElementsInRecyclerView()

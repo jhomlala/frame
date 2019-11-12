@@ -29,6 +29,7 @@ class MovieGeneralInformationFragmentViewModel : BaseViewModel() {
         this.movie = movie
         this.title.value = movie.title
         this.year.value = movie.year
+        Timber.d("Set title: " + movie.title)
         loadMovieDetails()
     }
 
