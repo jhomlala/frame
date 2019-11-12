@@ -1,17 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jhomlala.featuresdetails.MovieExtraInformationFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MovieExtraInformationFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <ImageView
+            android:id="@+id/fragment_movie_general_information_background_image_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:background="#DDFFFFFF"
+            tools:layout_editor_absoluteX="99dp"
+            tools:layout_editor_absoluteY="16dp">
 
-    </FrameLayout>
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_runtime_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Runtime:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:text="@{viewModel.runtime}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_runtime_label_text_view"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="120 minutes" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_rated_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Rated:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_runtime_label_text_view" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.rated}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_rated_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_runtime_label_text_view"
+                tools:text="R" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_release_date_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Release date:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_rated_label_text_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.releaseDate}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_release_date_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_rated_label_text_view"
+                tools:text="12/07/2015" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_language_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Language:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_release_date_label_text_view" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.language}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_language_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_release_date_label_text_view"
+                tools:text="English" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_country_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Country:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_language_label_text_view" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.country}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_country_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_language_label_text_view"
+                tools:text="PL" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_production_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Production:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_country_label_text_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.production}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_production_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_country_label_text_view"
+                tools:text="Jakub Productions" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_box_office_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Box office:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_production_label_text_view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.boxOffice}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_box_office_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_production_label_text_view"
+                tools:text="100$" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_director_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Director:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_box_office_label_text_view" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@{viewModel.director}"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_director_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_box_office_label_text_view"
+                tools:text="Jakub" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_writer_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Writer:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_director_label_text_view" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:text="@{viewModel.writer}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_writer_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_movie_extra_information_director_label_text_view"
+                tools:text="Jakub" />
+
+            <TextView
+                android:id="@+id/fragment_movie_extra_information_actors_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Actors:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:text="@{viewModel.actors}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/fragment_movie_extra_information_actors_label_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/textView23"
+                tools:text="Jakub" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

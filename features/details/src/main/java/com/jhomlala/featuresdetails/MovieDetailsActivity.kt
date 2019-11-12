@@ -1,6 +1,7 @@
 package com.jhomlala.featuresdetails
 
 import android.os.Bundle
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -59,5 +60,14 @@ class MovieDetailsActivity : BaseActivity<MovieDetailsActivityViewModel,Activity
     private fun setupToolbar() {
         setSupportActionBar(viewDataBinding?.activityMovieDetailsToolbar)
         title = viewModel.movie.title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == android.R.id.home){
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
