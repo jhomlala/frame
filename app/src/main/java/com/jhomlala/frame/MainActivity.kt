@@ -6,7 +6,6 @@ import com.jhomlala.common.model.NavigationEvent
 import com.jhomlala.common.model.NavigationEventType
 import com.jhomlala.common.utils.BundleConst
 import com.jhomlala.common.utils.launchActivity
-import com.jhomlala.featuresdetails.DetailsActivity
 import com.jhomlala.featuresdetails.MovieDetailsActivity
 import com.jhomlala.model.Movie
 import com.jhomlala.search.ui.SearchActivity
