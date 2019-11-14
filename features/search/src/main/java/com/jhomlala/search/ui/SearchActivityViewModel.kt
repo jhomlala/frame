@@ -1,7 +1,10 @@
 package com.jhomlala.search.ui
 
 import SingleLiveEvent
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.jhomlala.common.repository.OmdbService
 import com.jhomlala.common.ui.BaseViewModel
 import com.jhomlala.common.ui.RecyclerAdapterUpdateEvent
@@ -24,6 +27,8 @@ class SearchActivityViewModel : BaseViewModel() {
     val startSearchTextState = MutableLiveData<Boolean>(true)
     val movieClickEvent = SingleLiveEvent<MovieClickEvent>()
 
+    private lateinit var moviesDataSourceFactory: MovieDataSourceFactory
+    lateinit var moviesList: LiveData<PagedList<Movie>>
 
     init {
         EventBus.register(
@@ -33,16 +38,28 @@ class SearchActivityViewModel : BaseViewModel() {
         ) {
             movieClickEvent.value = it
         }
+
+        moviesDataSourceFactory = MovieDataSourceFactory(omdbService,viewModelScope)
+        val config = PagedList.Config.Builder().setPageSize(10).build()
+        moviesList = LivePagedListBuilder<Int,Movie>(moviesDataSourceFactory,config).build()
+
+
+
     }
 
-    fun searchMovies(movieTitle: String) {
+    fun searchMovies(movieTitle: String){
+        moviesDataSourceFactory.searchQuery = movieTitle
+        moviesList.value?.dataSource?.invalidate()
+    }
+
+    fun searchMovies2(movieTitle: String) {
         items.clear()
         refreshAllElementsInRecyclerView()
         progressState.value = true
         startSearchTextState.value = false
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val searchResult = omdbService.searchMovie("56a61252", movieTitle)
+                val searchResult = omdbService.searchMovie("56a61252", movieTitle,1)
                 Timber.d("Search result: " + searchResult)
                 if (!searchResult.response) {
                     onSearchErrorResponse()

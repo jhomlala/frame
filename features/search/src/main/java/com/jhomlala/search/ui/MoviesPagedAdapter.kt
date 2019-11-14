@@ -1,27 +1,29 @@
 package com.jhomlala.search.ui
 
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.jhomlala.model.Movie
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.jhomlala.model.Movie
 import com.jhomlala.search.databinding.ItemMovieBinding
 
-
-class MovieAdapter(val items: List<Movie>) : PagedListAdapter<Movie,MovieViewHolder>(diffCallback){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+class MoviesPagedAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(movieDiffCallback){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemBinding = ItemMovieBinding.inflate(layoutInflater, parent, false)
         return MovieViewHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(items[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is MovieViewHolder) {
+            val movie = getItem(position)
+            holder.bind(movie!!)
+        }
     }
 
     companion object{
-        private val diffCallback = object: DiffUtil.ItemCallback<Movie>() {
+        val movieDiffCallback = object: DiffUtil.ItemCallback<Movie>(){
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem.imdbID == newItem.imdbID
             }
@@ -32,5 +34,4 @@ class MovieAdapter(val items: List<Movie>) : PagedListAdapter<Movie,MovieViewHol
 
         }
     }
-
 }

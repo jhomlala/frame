@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jhomlala.common.model.NavigationEvent
 import com.jhomlala.common.model.NavigationEventType
 import com.jhomlala.common.utils.launchActivity
@@ -55,15 +56,22 @@ class SearchActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.search.requestFocus()
 
-        moviesAdapter = MovieAdapter(viewModel.items)
-        binding.activitySearchRecyclerView.adapter = moviesAdapter
+        //moviesAdapter = MovieAdapter(viewModel.items)
+        //binding.activitySearchRecyclerView.adapter = moviesAdapter
+        val adapter = MoviesPagedAdapter()
+        binding.activitySearchRecyclerView.adapter = adapter
+        viewModel.moviesList.observe(this, Observer {
+            adapter.submitList(it)
+        })
         binding.activitySearchRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun subscribeToViewModel() {
         viewModel.moviesRecyclerAdapterUpdateEvent.observe(this, Observer {
-            moviesAdapter.notifyDataSetChanged()
+            //moviesAdapter.submitList()
         })
+
+
 
         viewModel.movieClickEvent.observe(this, Observer { event ->
             EventBus.post(NavigationEvent(NavigationEventType.DETAILS, event.movie))

@@ -16,6 +16,7 @@ object Version {
     val material = "1.1.0-alpha04"
     val lifecycle = "2.1.0"
     val androidx_appcompat = "1.1.0"
+    val androidx_paging = "2.1.0"
 
     val junit = "4.12"
     val androidx_espresso = "3.1.0"
@@ -48,6 +49,7 @@ object Deps {
     val androidx_recyclerview =
         "androidx.recyclerview:recyclerview:${Version.androidx_recyclerview}"
     val androidx_appcompat = "androidx.appcompat:appcompat:${Version.androidx_appcompat}"
+    val androidx_paging = "androidx.paging:paging-runtime-ktx:${Version.androidx_paging}"
 
     val testlib_junit = "junit:junit:${Version.junit}"
 
