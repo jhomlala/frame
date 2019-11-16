@@ -1,6 +1,5 @@
 package com.jhomlala.search.ui
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jhomlala.common.model.NavigationEvent
 import com.jhomlala.common.model.NavigationEventType
-import com.jhomlala.common.utils.launchActivity
 import com.jhomlala.search.R
 
 import com.jhomlala.search.databinding.ActivitySearchBinding
@@ -62,8 +60,30 @@ class SearchActivity : AppCompatActivity() {
         binding.activitySearchRecyclerView.adapter = adapter
         viewModel.moviesList.observe(this, Observer {
             adapter.submitList(it)
+            onDataChanged()
         })
         binding.activitySearchRecyclerView.layoutManager = LinearLayoutManager(this)
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                onDataChanged()
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                super.onItemRangeChanged(positionStart, itemCount)
+                onDataChanged()
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+                super.onItemRangeChanged(positionStart, itemCount, payload)
+                onDataChanged()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                super.onItemRangeRemoved(positionStart, itemCount)
+                onDataChanged()
+            }
+        })
     }
 
     private fun subscribeToViewModel() {
@@ -71,11 +91,15 @@ class SearchActivity : AppCompatActivity() {
             //moviesAdapter.submitList()
         })
 
-
-
         viewModel.movieClickEvent.observe(this, Observer { event ->
             EventBus.post(NavigationEvent(NavigationEventType.DETAILS, event.movie))
         })
+
+    }
+
+    private fun onDataChanged(){
+        Timber.d("On data changed "+viewModel.moviesList.value?.size)
+        viewModel.onDataChanged(viewModel.moviesList.value?.size)
     }
 
 
