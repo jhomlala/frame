@@ -20,7 +20,7 @@ class SearchActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySearchBinding
     lateinit var viewModel: SearchActivityViewModel
-    lateinit var moviesAdapter: MovieAdapter
+    lateinit var moviesAdapter: MoviesPagedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,14 +56,14 @@ class SearchActivity : AppCompatActivity() {
 
         //moviesAdapter = MovieAdapter(viewModel.items)
         //binding.activitySearchRecyclerView.adapter = moviesAdapter
-        val adapter = MoviesPagedAdapter()
-        binding.activitySearchRecyclerView.adapter = adapter
+        moviesAdapter = MoviesPagedAdapter()
+        binding.activitySearchRecyclerView.adapter =moviesAdapter
         viewModel.moviesList.observe(this, Observer {
-            adapter.submitList(it)
+            moviesAdapter.submitList(it)
             onDataChanged()
         })
         binding.activitySearchRecyclerView.layoutManager = LinearLayoutManager(this)
-        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+        moviesAdapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 onDataChanged()
@@ -95,11 +95,18 @@ class SearchActivity : AppCompatActivity() {
             EventBus.post(NavigationEvent(NavigationEventType.DETAILS, event.movie))
         })
 
+        viewModel.getState().observe(this, Observer {
+          moviesAdapter.setState(it)
+            Timber.d("new state: " + it)
+            viewModel.onStateChanged(it)
+
+        })
+
     }
 
     private fun onDataChanged(){
         Timber.d("On data changed "+viewModel.moviesList.value?.size)
-        viewModel.onDataChanged(viewModel.moviesList.value?.size)
+        //viewModel.onDataChanged(viewModel.moviesList.value?.size)
     }
 
 

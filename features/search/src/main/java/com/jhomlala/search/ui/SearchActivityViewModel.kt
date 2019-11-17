@@ -3,6 +3,7 @@ package com.jhomlala.search.ui
 import SingleLiveEvent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jhomlala.common.repository.OmdbService
@@ -38,14 +39,14 @@ class SearchActivityViewModel : BaseViewModel() {
             movieClickEvent.value = it
         }
 
-        moviesDataSourceFactory = MovieDataSourceFactory(omdbService,viewModelScope)
+        moviesDataSourceFactory = MovieDataSourceFactory(omdbService, viewModelScope)
         val config = PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build()
-        moviesList = LivePagedListBuilder<Int,Movie>(moviesDataSourceFactory,config).build()
+        moviesList = LivePagedListBuilder<Int, Movie>(moviesDataSourceFactory, config).build()
 
 
     }
 
-    fun searchMovies(movieTitle: String){
+    fun searchMovies(movieTitle: String) {
         searchClicked = true
         moviesDataSourceFactory.searchQuery = movieTitle
         moviesList.value?.dataSource?.invalidate()
@@ -53,16 +54,45 @@ class SearchActivityViewModel : BaseViewModel() {
     }
 
 
-
     fun onDataChanged(size: Int?) {
         Timber.d("on data changed: " + size)
-        if (!searchClicked){
+        if (!searchClicked) {
             return
         }
         val startSearchTextStateValue = startSearchTextState.value
-        if (startSearchTextStateValue!!){
+        if (startSearchTextStateValue!!) {
             startSearchTextState.value = false
         }
         emptyTextState.value = size == 0
+    }
+
+   fun getState(): LiveData<State> {
+        return Transformations.switchMap<MovieDataSource, State>(
+            moviesDataSourceFactory.moviesDataSource,
+            MovieDataSource::state
+        )
+    }
+
+    fun onStateChanged(state: State?) {
+        if (!searchClicked){
+            Timber.e("Search not clicked yet!")
+            return
+        }
+        Timber.d("On state changed!")
+        val size = moviesList.value?.size
+        startSearchTextState.value = false
+        if (size == 0){
+            if (state == State.DONE || state == State.ERROR){
+                emptyTextState.value = true
+                progressState.value = false
+            } else {
+                progressState.value = true
+            }
+        }
+
+        if (size != null && size > 0){
+            emptyTextState.value = false
+            progressState.value = false
+        }
     }
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.Executor
 class MovieDataSource(private val omdbService: OmdbService, private val scope: CoroutineScope) :
     PageKeyedDataSource<Int, Movie>() {
 
-    var state: MutableLiveData<Int> = MutableLiveData()
+    var state: MutableLiveData<State> = MutableLiveData()
     var searchQuery: String = ""
 
 
@@ -53,16 +53,21 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
     }
 
     private fun loadMovies(page: Int, moviesCallback: MoviesCallback) {
-        state.postValue(1)
+       setState(State.LOADING)
         scope.launch(Dispatchers.IO) {
             val result = omdbService.searchMovie("56a61252", searchQuery, page)
             withContext(Dispatchers.Main) {
-                state.value = 0
                 if (result.response) {
+                    setState(State.DONE)
                     val movies = result.search
                     fixPosterUrls(movies)
                     moviesCallback.onMoviesLoaded(movies)
                 } else {
+                    if (page > 1){
+                        setState(State.DONE)
+                    } else {
+                        setState(State.ERROR)
+                    }
                     moviesCallback.onMoviesLoadFailed()
                 }
 
@@ -79,9 +84,17 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
         }
     }
 
+    private fun setState(currentState: State){
+        state.postValue(currentState)
+    }
+
 }
 
 interface MoviesCallback {
     fun onMoviesLoaded(movies: List<Movie>)
     fun onMoviesLoadFailed()
+}
+
+enum class State{
+    DONE,LOADING,ERROR
 }
