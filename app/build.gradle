@@ -27,7 +27,7 @@ dependencies {
     implementation project(':features:details')
     implementation project(":common")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation Deps.androidx_core
     implementation Deps.coroutines_core
@@ -45,6 +45,7 @@ dependencies {
     implementation Deps.koin_android
     implementation Deps.koin_android_scope
     implementation Deps.timber
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'

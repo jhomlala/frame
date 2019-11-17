@@ -8,6 +8,7 @@ import com.jhomlala.common.utils.BundleConst
 import com.jhomlala.common.utils.launchActivity
 import com.jhomlala.featuresdetails.MovieDetailsActivity
 import com.jhomlala.frame.databinding.ActivityMainBinding
+
 import com.jhomlala.model.Movie
 import com.jhomlala.search.ui.SearchActivity
 import kotlinx.coroutines.Dispatchers
