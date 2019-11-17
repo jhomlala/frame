@@ -2,18 +2,14 @@ package com.jhomlala.featuresdetails
 
 import android.os.Bundle
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import com.jhomlala.common.ui.BaseActivity
 import com.jhomlala.common.utils.BundleConst
 import com.jhomlala.featuresdetails.databinding.ActivityMovieDetailsBinding
 import com.jhomlala.model.Movie
 
-import kotlinx.android.synthetic.main.activity_movie_details.*
+
 import timber.log.Timber
 
 class MovieDetailsActivity : BaseActivity<MovieDetailsActivityViewModel,ActivityMovieDetailsBinding>() {
@@ -25,9 +21,6 @@ class MovieDetailsActivity : BaseActivity<MovieDetailsActivityViewModel,Activity
         return ViewModelProviders.of(this).get(MovieDetailsActivityViewModel::class.java)
     }
 
-    override fun getBindingVariable(): Int {
-        return 0
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +30,6 @@ class MovieDetailsActivity : BaseActivity<MovieDetailsActivityViewModel,Activity
             if (movie != null) {
                 viewModel.movie = movie
                 setupUi()
-                //subscribeToViewModel()
             } else {
                 Timber.e("Movie is null")
                 return

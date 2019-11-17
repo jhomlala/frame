@@ -1,45 +1,59 @@
 package com.jhomlala.search.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jhomlala.common.model.NavigationEvent
 import com.jhomlala.common.model.NavigationEventType
+import com.jhomlala.common.ui.BaseActivity
 import com.jhomlala.search.R
 
 import com.jhomlala.search.databinding.ActivitySearchBinding
-import timber.log.Timber
+import com.jhomlala.search.model.MovieItemType
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBinding>() {
 
-    lateinit var binding: ActivitySearchBinding
-    lateinit var viewModel: SearchActivityViewModel
-    lateinit var moviesAdapter: MoviesPagedAdapter
+    private lateinit var moviesAdapter: MoviesPagedAdapter
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_search
+    }
+
+    override fun setupViewModel(): SearchActivityViewModel {
+        viewModel = ViewModelProviders.of(this).get(SearchActivityViewModel::class.java)
+        return viewModel
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
-        //val viewModel = ViewModelProvider(this).get(SearchActivityViewModel::class.java)
-        viewModel = ViewModelProviders.of(this).get(SearchActivityViewModel::class.java)
-        binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
-        binding.executePendingBindings()
+        val binding = viewDataBinding
+        binding?.viewModel = viewModel
+        binding?.executePendingBindings()
         setupUI()
         subscribeToViewModel()
-        Timber.d("Created search activity")
     }
 
     private fun setupUI() {
-        binding.search.setOnQueryTextListener(object :
+        val binding = viewDataBinding ?: return
+        setupSearchView(binding)
+        setupToolbar(binding)
+        setupRecyclerView(binding)
+    }
+
+    private fun setupRecyclerView(binding: ActivitySearchBinding) {
+        moviesAdapter = MoviesPagedAdapter(::createViewModelForMovieItem)
+        binding.activitySearchRecyclerView.adapter = moviesAdapter
+        binding.activitySearchRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun setupSearchView(binding: ActivitySearchBinding) {
+        binding.activitySearchSearch.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("Test", "Query text submit: " + query)
                 if (query != null) {
                     viewModel.searchMovies(query)
                 }
@@ -47,71 +61,44 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d("Test", "Query text change: " + newText)
                 return true
             }
         })
-        setSupportActionBar(binding.toolbar)
-        binding.search.requestFocus()
+        binding.activitySearchSearch.requestFocus()
+    }
 
-        //moviesAdapter = MovieAdapter(viewModel.items)
-        //binding.activitySearchRecyclerView.adapter = moviesAdapter
-        moviesAdapter = MoviesPagedAdapter()
-        binding.activitySearchRecyclerView.adapter =moviesAdapter
-        viewModel.moviesList.observe(this, Observer {
-            moviesAdapter.submitList(it)
-            onDataChanged()
-        })
-        binding.activitySearchRecyclerView.layoutManager = LinearLayoutManager(this)
-        moviesAdapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                onDataChanged()
-            }
-
-            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-                super.onItemRangeChanged(positionStart, itemCount)
-                onDataChanged()
-            }
-
-            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
-                super.onItemRangeChanged(positionStart, itemCount, payload)
-                onDataChanged()
-            }
-
-            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-                super.onItemRangeRemoved(positionStart, itemCount)
-                onDataChanged()
-            }
-        })
+    private fun setupToolbar(binding: ActivitySearchBinding) {
+        setSupportActionBar(binding.activitySearchToolbar)
     }
 
     private fun subscribeToViewModel() {
-        viewModel.moviesRecyclerAdapterUpdateEvent.observe(this, Observer {
-            //moviesAdapter.submitList()
-        })
-
         viewModel.movieClickEvent.observe(this, Observer { event ->
             EventBus.post(NavigationEvent(NavigationEventType.DETAILS, event.movie))
         })
 
-        viewModel.getState().observe(this, Observer {
-          moviesAdapter.setState(it)
-            Timber.d("new state: " + it)
-            viewModel.onStateChanged(it)
-
+        viewModel.getState().observe(this, Observer { state ->
+            moviesAdapter.setState(state)
+            viewModel.onStateChanged(state)
         })
 
-        viewModel.getErrorState().observe(this, Observer {
-            Timber.d("Set last error state:" + it)
-            viewModel.setupLastErrorState(it)
+        viewModel.getErrorState().observe(this, Observer { errorState ->
+            viewModel.setupLastErrorState(errorState)
+        })
+
+        viewModel.moviesList.observe(this, Observer { pagedList ->
+            if (::moviesAdapter.isInitialized)
+                moviesAdapter.submitList(pagedList)
         })
     }
 
-    private fun onDataChanged(){
-        Timber.d("On data changed "+viewModel.moviesList.value?.size)
-        //viewModel.onDataChanged(viewModel.moviesList.value?.size)
+    private fun createViewModelForMovieItem(itemType: Int): ViewModel {
+        return if (itemType == MovieItemType.DATA) {
+            ViewModelProviders.of(this)
+                .get("${System.currentTimeMillis()}", MovieViewModel::class.java)
+        } else {
+            ViewModelProviders.of(this)
+                .get("${System.currentTimeMillis()}", MovieFooterViewModel::class.java)
+        }
+
     }
-
-
 }

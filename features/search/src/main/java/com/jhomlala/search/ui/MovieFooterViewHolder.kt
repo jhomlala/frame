@@ -1,18 +1,20 @@
 package com.jhomlala.search.ui
 
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.jhomlala.search.databinding.ItemMovieFooterBinding
+import com.jhomlala.search.model.State
 
-class MovieFooterViewHolder(val binding: ItemMovieFooterBinding) :
+class MovieFooterViewHolder(
+    binding: ItemMovieFooterBinding,
+    private val viewModel: MovieFooterViewModel
+) :
     RecyclerView.ViewHolder(binding.root) {
-    val viewModel: MovieFooterViewModel
-    init{
-        viewModel = MovieFooterViewModel()
+    init {
         binding.viewModel = viewModel
         binding.executePendingBindings()
     }
-    fun bind(state: State){
+
+    fun bind(state: State) {
         viewModel.bind(state)
     }
 }

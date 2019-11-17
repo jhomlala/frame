@@ -1,16 +1,18 @@
-package com.jhomlala.search.ui
+package com.jhomlala.search.data
 
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.ItemKeyedDataSource
 import androidx.paging.PageKeyedDataSource
 import com.jhomlala.common.repository.OmdbService
+import com.jhomlala.common.utils.AppConst
 import com.jhomlala.model.Movie
+import com.jhomlala.search.model.ErrorState
+import com.jhomlala.search.model.MoviesCallback
+import com.jhomlala.search.model.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.concurrent.Executor
 
 class MovieDataSource(private val omdbService: OmdbService, private val scope: CoroutineScope) :
     PageKeyedDataSource<Int, Movie>() {
@@ -58,7 +60,7 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
         setState(State.LOADING)
         scope.launch(Dispatchers.IO) {
             try {
-                val result = omdbService.searchMovie("56a61252", searchQuery, page)
+                val result = omdbService.searchMovie(AppConst.API_KEY, searchQuery, page)
                 withContext(Dispatchers.Main) {
                     if (result.response) {
                         setState(State.DONE)
@@ -89,7 +91,7 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
     private fun fixPosterUrls(movies: List<Movie>) {
         movies.forEach { movie ->
             if (movie.poster.isNullOrEmpty() || movie.poster == "N/A") {
-                movie.poster = "https://i.imgur.com/59Uc49b.png"
+                movie.poster = AppConst.PLACEHOLDER_IMAGE_URL
 
             }
         }
@@ -100,21 +102,6 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
     }
 
     private fun setErrorState(currentErrorState: ErrorState) {
-        Timber.d("Set error state: " + currentErrorState)
         errorState.postValue(currentErrorState)
     }
-
-}
-
-interface MoviesCallback {
-    fun onMoviesLoaded(movies: List<Movie>)
-    fun onMoviesLoadFailed()
-}
-
-enum class State {
-    DONE, LOADING, ERROR
-}
-
-enum class ErrorState {
-    NONE, ERROR_NETWORK, ERROR_NO_RESULTS
 }

@@ -3,6 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="activity_search_empty">Nothing found :(</string>
+    <string name="activity_search_error_empty">Nothing found :(</string>
     <string name="activity_search_start_search">Type movie title to start search</string>
+    <string name="activity_search_error_internet_connection">Internet connection problem</string>
 </resources>

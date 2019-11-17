@@ -22,11 +22,9 @@ abstract class BaseActivity<T: ViewModel, V: ViewDataBinding>: AppCompatActivity
         this.viewModel = if (!::viewModel.isInitialized) setupViewModel() else viewModel
 
         viewDataBinding?.lifecycleOwner = this
-        viewDataBinding?.setVariable(getBindingVariable(), viewModel)
         viewDataBinding?.executePendingBindings()
     }
     @LayoutRes
     abstract fun getLayoutId(): Int
     abstract fun setupViewModel(): T
-    abstract fun getBindingVariable(): Int
 }

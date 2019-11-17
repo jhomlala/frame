@@ -8,10 +8,14 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jhomlala.common.repository.OmdbService
 import com.jhomlala.common.ui.BaseViewModel
-import com.jhomlala.common.ui.RecyclerAdapterUpdateEvent
 
 import com.jhomlala.model.Movie
+import com.jhomlala.search.R
+import com.jhomlala.search.data.MovieDataSource
+import com.jhomlala.search.data.MovieDataSourceFactory
+import com.jhomlala.search.model.ErrorState
 import com.jhomlala.search.model.MovieClickEvent
+import com.jhomlala.search.model.State
 
 import kotlinx.coroutines.*
 import org.koin.core.inject
@@ -20,17 +24,17 @@ import timber.log.Timber
 class SearchActivityViewModel : BaseViewModel() {
 
     private val omdbService: OmdbService by inject()
-    val moviesRecyclerAdapterUpdateEvent = SingleLiveEvent<RecyclerAdapterUpdateEvent>()
+
+    private var lastErrorState: ErrorState? = null
+    private lateinit var moviesDataSourceFactory: MovieDataSourceFactory
+    private var searchClicked = false
+
     val progressState = MutableLiveData<Boolean>()
     val emptyTextState = MutableLiveData<Boolean>()
     val emptyText = MutableLiveData<String>()
     val startSearchTextState = MutableLiveData<Boolean>(true)
     val movieClickEvent = SingleLiveEvent<MovieClickEvent>()
-    private var searchClicked = false
-    var lastErrorState: ErrorState? = null
-
-    private lateinit var moviesDataSourceFactory: MovieDataSourceFactory
-    lateinit var moviesList: LiveData<PagedList<Movie>>
+    var moviesList: LiveData<PagedList<Movie>>
 
     init {
         EventBus.register(
@@ -41,33 +45,19 @@ class SearchActivityViewModel : BaseViewModel() {
             movieClickEvent.value = it
         }
 
-        moviesDataSourceFactory = MovieDataSourceFactory(omdbService, viewModelScope)
+        moviesDataSourceFactory =
+            MovieDataSourceFactory(omdbService, viewModelScope)
         val config = PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build()
         moviesList = LivePagedListBuilder<Int, Movie>(moviesDataSourceFactory, config).build()
         setupEmptyText()
-
-
     }
 
     fun searchMovies(movieTitle: String) {
         searchClicked = true
-        moviesDataSourceFactory.searchQuery = movieTitle
+        moviesDataSourceFactory.searchQuery = movieTitle.trim()
         moviesList.value?.dataSource?.invalidate()
-
     }
 
-
-    fun onDataChanged(size: Int?) {
-        Timber.d("on data changed: " + size)
-        if (!searchClicked) {
-            return
-        }
-        val startSearchTextStateValue = startSearchTextState.value
-        if (startSearchTextStateValue!!) {
-            startSearchTextState.value = false
-        }
-        emptyTextState.value = size == 0
-    }
 
     fun getState(): LiveData<State> {
         return Transformations.switchMap<MovieDataSource, State>(
@@ -106,18 +96,19 @@ class SearchActivityViewModel : BaseViewModel() {
         }
     }
 
-    fun setupEmptyText(){
-        if (lastErrorState == null || lastErrorState == ErrorState.ERROR_NO_RESULTS){
-            emptyText.value = "Nothing found :("
-        } else if (lastErrorState == ErrorState.ERROR_NETWORK){
-            emptyText.value = "Internet connection problem"
+    private fun setupEmptyText() {
+
+        if (lastErrorState == null || lastErrorState == ErrorState.ERROR_NO_RESULTS) {
+            emptyText.value = getString(R.string.activity_search_error_empty)
+        } else if (lastErrorState == ErrorState.ERROR_NETWORK) {
+            emptyText.value = getString(R.string.activity_search_error_internet_connection)
         } else {
             emptyText.value = ""
         }
 
     }
 
-    fun setupLastErrorState(state: ErrorState){
+    fun setupLastErrorState(state: ErrorState) {
         this.lastErrorState = state
         setupEmptyText()
     }
