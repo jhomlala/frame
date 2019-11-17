@@ -102,6 +102,10 @@ class SearchActivity : AppCompatActivity() {
 
         })
 
+        viewModel.getErrorState().observe(this, Observer {
+            Timber.d("Set last error state:" + it)
+            viewModel.setupLastErrorState(it)
+        })
     }
 
     private fun onDataChanged(){

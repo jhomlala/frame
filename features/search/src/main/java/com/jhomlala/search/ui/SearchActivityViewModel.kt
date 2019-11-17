@@ -23,9 +23,11 @@ class SearchActivityViewModel : BaseViewModel() {
     val moviesRecyclerAdapterUpdateEvent = SingleLiveEvent<RecyclerAdapterUpdateEvent>()
     val progressState = MutableLiveData<Boolean>()
     val emptyTextState = MutableLiveData<Boolean>()
+    val emptyText = MutableLiveData<String>()
     val startSearchTextState = MutableLiveData<Boolean>(true)
     val movieClickEvent = SingleLiveEvent<MovieClickEvent>()
     private var searchClicked = false
+    var lastErrorState: ErrorState? = null
 
     private lateinit var moviesDataSourceFactory: MovieDataSourceFactory
     lateinit var moviesList: LiveData<PagedList<Movie>>
@@ -42,6 +44,7 @@ class SearchActivityViewModel : BaseViewModel() {
         moviesDataSourceFactory = MovieDataSourceFactory(omdbService, viewModelScope)
         val config = PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build()
         moviesList = LivePagedListBuilder<Int, Movie>(moviesDataSourceFactory, config).build()
+        setupEmptyText()
 
 
     }
@@ -66,23 +69,30 @@ class SearchActivityViewModel : BaseViewModel() {
         emptyTextState.value = size == 0
     }
 
-   fun getState(): LiveData<State> {
+    fun getState(): LiveData<State> {
         return Transformations.switchMap<MovieDataSource, State>(
             moviesDataSourceFactory.moviesDataSource,
             MovieDataSource::state
         )
     }
 
+    fun getErrorState(): LiveData<ErrorState> {
+        return Transformations.switchMap<MovieDataSource, ErrorState>(
+            moviesDataSourceFactory.moviesDataSource,
+            MovieDataSource::errorState
+        )
+    }
+
     fun onStateChanged(state: State?) {
-        if (!searchClicked){
+        if (!searchClicked) {
             Timber.e("Search not clicked yet!")
             return
         }
-        Timber.d("On state changed!")
+
         val size = moviesList.value?.size
         startSearchTextState.value = false
-        if (size == 0){
-            if (state == State.DONE || state == State.ERROR){
+        if (size == 0) {
+            if (state == State.DONE || state == State.ERROR) {
                 emptyTextState.value = true
                 progressState.value = false
             } else {
@@ -90,9 +100,25 @@ class SearchActivityViewModel : BaseViewModel() {
             }
         }
 
-        if (size != null && size > 0){
+        if (size != null && size > 0) {
             emptyTextState.value = false
             progressState.value = false
         }
+    }
+
+    fun setupEmptyText(){
+        if (lastErrorState == null || lastErrorState == ErrorState.ERROR_NO_RESULTS){
+            emptyText.value = "Nothing found :("
+        } else if (lastErrorState == ErrorState.ERROR_NETWORK){
+            emptyText.value = "Internet connection problem"
+        } else {
+            emptyText.value = ""
+        }
+
+    }
+
+    fun setupLastErrorState(state: ErrorState){
+        this.lastErrorState = state
+        setupEmptyText()
     }
 }

@@ -16,6 +16,7 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
     PageKeyedDataSource<Int, Movie>() {
 
     var state: MutableLiveData<State> = MutableLiveData()
+    val errorState: MutableLiveData<ErrorState> = MutableLiveData()
     var searchQuery: String = ""
 
 
@@ -53,26 +54,36 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
     }
 
     private fun loadMovies(page: Int, moviesCallback: MoviesCallback) {
-       setState(State.LOADING)
-        scope.launch(Dispatchers.IO) {
-            val result = omdbService.searchMovie("56a61252", searchQuery, page)
-            withContext(Dispatchers.Main) {
-                if (result.response) {
-                    setState(State.DONE)
-                    val movies = result.search
-                    fixPosterUrls(movies)
-                    moviesCallback.onMoviesLoaded(movies)
-                } else {
-                    if (page > 1){
-                        setState(State.DONE)
-                    } else {
-                        setState(State.ERROR)
-                    }
-                    moviesCallback.onMoviesLoadFailed()
-                }
 
+        setState(State.LOADING)
+        scope.launch(Dispatchers.IO) {
+            try {
+                val result = omdbService.searchMovie("56a61252", searchQuery, page)
+                withContext(Dispatchers.Main) {
+                    if (result.response) {
+                        setState(State.DONE)
+                        setErrorState(ErrorState.NONE)
+                        val movies = result.search
+                        fixPosterUrls(movies)
+                        moviesCallback.onMoviesLoaded(movies)
+                    } else {
+                        if (page > 1) {
+                            setErrorState(ErrorState.NONE)
+                            setState(State.DONE)
+                        } else {
+                            setErrorState(ErrorState.ERROR_NO_RESULTS)
+                            setState(State.ERROR)
+                        }
+                        moviesCallback.onMoviesLoadFailed()
+                    }
+                }
+            } catch (exception: Exception) {
+                Timber.e(exception)
+                setErrorState(ErrorState.ERROR_NETWORK)
+                setState(State.ERROR)
             }
         }
+
     }
 
     private fun fixPosterUrls(movies: List<Movie>) {
@@ -84,8 +95,13 @@ class MovieDataSource(private val omdbService: OmdbService, private val scope: C
         }
     }
 
-    private fun setState(currentState: State){
+    private fun setState(currentState: State) {
         state.postValue(currentState)
+    }
+
+    private fun setErrorState(currentErrorState: ErrorState) {
+        Timber.d("Set error state: " + currentErrorState)
+        errorState.postValue(currentErrorState)
     }
 
 }
@@ -95,6 +111,10 @@ interface MoviesCallback {
     fun onMoviesLoadFailed()
 }
 
-enum class State{
-    DONE,LOADING,ERROR
+enum class State {
+    DONE, LOADING, ERROR
+}
+
+enum class ErrorState {
+    NONE, ERROR_NETWORK, ERROR_NO_RESULTS
 }
