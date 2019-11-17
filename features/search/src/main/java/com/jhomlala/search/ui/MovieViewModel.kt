@@ -3,11 +3,9 @@ package com.jhomlala.search.ui
 import EventBus
 import android.view.View
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jhomlala.model.Movie
 import com.jhomlala.search.model.MovieClickEvent
-import timber.log.Timber
 
 class MovieViewModel : ViewModel() {
     var title = ObservableField<String>()
@@ -21,7 +19,6 @@ class MovieViewModel : ViewModel() {
     }
 
     fun onItemClicked(view: View) {
-        Timber.d("Clicked!!!")
         EventBus.post(MovieClickEvent(movie))
     }
 }

@@ -12,11 +12,15 @@ class MainApplication : Application() {
         module {
             single { OmdbService.create() }
         }
+    val applicationKoinModule =
+        module {
+            single { applicationContext }
+        }
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            modules(listOf(baseNetworkKoinModule))
+            modules(listOf(baseNetworkKoinModule, applicationKoinModule))
         }
         Timber.plant(Timber.DebugTree())
     }
